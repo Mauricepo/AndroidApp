@@ -1,4 +1,5 @@
 import { useVocabStore, VocabEntry, VocabStore } from '@/store/levelStore'
+import { Audio } from 'expo-av'
 import { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Button, Progress, View, XStack, YStack } from 'tamagui'
@@ -42,6 +43,10 @@ export default function TabTwoScreen() {
   }, [vocab])
 
   let done = false
+
+  const playSound = async (soundUrl: string) => {
+    const { sound } = await Audio.Sound.createAsync({ uri: soundUrl }, { shouldPlay: true })
+  }
 
   function setNextWord() {
     setWrong(false)
@@ -89,6 +94,7 @@ export default function TabTwoScreen() {
       setWrong(true)
       return
     } else {
+      playSound(selectedAnswer.sound)
       setNextWord()
     }
   }
@@ -127,7 +133,14 @@ export default function TabTwoScreen() {
         <View width={20} height={500} />
         <XStack flex={1} gap="$5">
           {asnwers?.map((word, index) => (
-            <Button key={index} size="$3" theme="accent" onPress={() => handleAnswer(word)}>
+            <Button
+              key={index}
+              size="$3"
+              theme="accent"
+              onPress={() => {
+                handleAnswer(word)
+              }}
+            >
               {checkSpelling ? word.hiragana : word.meaning}
             </Button>
           ))}
