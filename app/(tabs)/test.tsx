@@ -9,13 +9,15 @@ export default function TabTwoScreen() {
 
   const [currenrtWord, setCurrentWort] = useState<learningWort | null>(null)
 
-  const [asnwers, setAnswers] = useState<string[]>()
+  const [asnwers, setAnswers] = useState<VocabEntry[]>()
 
   const [wrong, setWrong] = useState<boolean>()
 
+  const [checkSpelling, setCheckSpelling] = useState<boolean>()
+
   interface learningWort {
     word: VocabEntry
-    step: 1 | 2 | 3 | 4 | 5
+    step: number
     active?: boolean
     done?: boolean
   }
@@ -25,7 +27,7 @@ export default function TabTwoScreen() {
   }, [])
 
   useEffect(() => {
-    const newWords = getNext()?.map((entry) => ({ word: entry, step: 1 as 1 | 2 | 3 | 4 | 5, active: false, done: false })) || null
+    const newWords = getNext()?.map((entry) => ({ word: entry, step: 1, active: false, done: false })) || null
 
     const updatedWords = newWords?.map((word, index) => ({
       ...word,
@@ -42,6 +44,8 @@ export default function TabTwoScreen() {
   let done = false
 
   function setNextWord() {
+    setWrong(false)
+    setCheckSpelling(false)
     let newWords =
       learningWords?.map((word) => {
         if (word.word.word === currenrtWord?.word.word) {
@@ -50,10 +54,9 @@ export default function TabTwoScreen() {
             return { ...word, active: false, done: true }
           }
           if (wrong) {
-            return { ...word, step: (word.step - 1) as 1 | 2 | 3 | 4 | 5 }
+            return { ...word, step: word.step > 1 ? word.step : 1 }
           }
-          console.log('word.step:', word.step)
-          return { ...word, step: (word.step + 1) as 1 | 2 | 3 | 4 | 5 }
+          return { ...word, step: word.step + 1 }
         }
         return word
       }) || null
@@ -72,8 +75,13 @@ export default function TabTwoScreen() {
     currentWords(newWords)
   }
 
-  function handleAnswer(selectedAnswer: string) {
-    if (currenrtWord?.word.meaning !== selectedAnswer) {
+  function handleAnswer(selectedAnswer: VocabEntry) {
+    if (!checkSpelling) {
+      setCheckSpelling(true)
+      return
+    }
+
+    if (currenrtWord?.word.meaning !== selectedAnswer.meaning) {
       setWrong(true)
       return
     } else {
@@ -87,11 +95,11 @@ export default function TabTwoScreen() {
 
   useEffect(() => {
     const answers = learningWords
-      ?.map((w) => w.word.meaning)
-      ?.filter((word) => word !== currenrtWord?.word.word)
+      ?.map((w) => w.word)
+      ?.filter((word) => word.word !== currenrtWord?.word.word)
       ?.sort(() => Math.random() - 0.5)
       ?.slice(0, 2)
-      .concat(currenrtWord?.word.meaning || [])
+      .concat(currenrtWord?.word ? [currenrtWord.word] : [])
 
     setAnswers(answers?.sort(() => Math.random() - 0.5))
   }, [currenrtWord])
@@ -114,9 +122,9 @@ export default function TabTwoScreen() {
         </Button>
         <View width={20} height={500} />
         <XStack flex={1} gap="$5">
-          {asnwers?.map((answer, index) => (
-            <Button key={index} size="$3" theme="accent" onPress={() => handleAnswer(answer)}>
-              {answer}
+          {asnwers?.map((word, index) => (
+            <Button key={index} size="$3" theme="accent" onPress={() => handleAnswer(word)}>
+              {checkSpelling ? word.hiragana : word.meaning}
             </Button>
           ))}
         </XStack>
