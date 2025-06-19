@@ -1,12 +1,60 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create, StoreApi, UseBoundStore } from 'zustand'
 const initialWords = [
+  { text: '行く', hiragana: 'iku', translation: 'go', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW00393A.mp3' },
+
+  {
+    text: '見る',
+    hiragana: 'miru',
+    translation: 'see, look at',
+    audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW09011A.mp3'
+  },
+
   {
     text: '多い',
     hiragana: 'ooi',
     translation: 'a lot of, many',
     audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW00964A.mp3'
   },
+
+  {
+    text: '家',
+    hiragana: 'uchi',
+    translation: 'home, household',
+    audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW00709A.mp3'
+  },
+
+  {
+    text: 'これ',
+    hiragana: 'kore',
+    translation: 'this, this one',
+    audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW03226A.mp3'
+  },
+
+  {
+    text: 'それ',
+    hiragana: 'sore',
+    translation: 'that, that one',
+    audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW05106A.mp3'
+  },
+
+  {
+    text: '私',
+    hiragana: 'watashi',
+    translation: 'I (general)',
+    audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW10045A.mp3'
+  },
+
+  {
+    text: '仕事',
+    hiragana: 'shigoto',
+    translation: 'work, job',
+    audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW03665A.mp3'
+  },
+
+  { text: 'いつ', hiragana: 'itsu', translation: 'when', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW00501A.mp3' },
+
+  { text: 'する', hiragana: 'suru', translation: 'do, make', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW04644A.mp3' },
 
   {
     text: '出る',
@@ -53,6 +101,10 @@ const initialWords = [
     audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW01160A.mp3'
   },
 
+  { text: '今', hiragana: 'ima', translation: 'now', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW00573A.mp3' },
+
+  { text: '新しい', hiragana: 'atarashii', translation: 'new', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW00147A.mp3' },
+
   { text: 'なる', hiragana: 'naru', translation: 'become', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW06750A.mp3' },
 
   {
@@ -72,6 +124,15 @@ const initialWords = [
   },
 
   { text: '言う', hiragana: 'iu', translation: 'say, tell', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW00352A.mp3' },
+
+  {
+    text: 'å°ãªã',
+    hiragana: 'sukunai',
+    translation: 'few, little',
+    audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW04547A.mp3'
+  },
+
+  { text: 'é«ã', hiragana: 'takai', translation: 'high, tall', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW05292A.mp3' },
 
   { text: '子供', hiragana: 'kodomo', translation: 'child', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW03174A.mp3' },
 
@@ -99,12 +160,16 @@ const initialWords = [
 
   { text: '長い', hiragana: 'nagai', translation: 'long', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW06628A.mp3' },
 
+  { text: '本', hiragana: 'hon', translation: 'book', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW08587A.mp3' },
+
   {
     text: '今年',
     hiragana: 'kotoshi',
     translation: 'this year (colloquial)',
     audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW03165A.mp3'
   },
+
+  { text: 'よく', hiragana: 'yoku', translation: 'often, well', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW09642A.mp3' },
 
   {
     text: '彼女',
@@ -139,10 +204,26 @@ const initialWords = [
   },
 
   {
+    text: 'あげる',
+    hiragana: 'ageru',
+    translation: 'give, offer (colloquial)',
+    audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW00095A.mp3'
+  },
+
+  {
     text: 'こう',
     hiragana: 'kou',
     translation: 'like this, such',
     audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW02846A.mp3'
+  },
+
+  { text: '学校', hiragana: 'gakkou', translation: 'school', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW01684A.mp3' },
+
+  {
+    text: 'くれる',
+    hiragana: 'kureru',
+    translation: 'be given',
+    audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW02561A.mp3'
   },
 
   {
@@ -175,6 +256,10 @@ const initialWords = [
     audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW08319A.mp3'
   },
 
+  { text: 'どこ', hiragana: 'doko', translation: 'where', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW06412A.mp3' },
+
+  { text: '部屋', hiragana: 'heya', translation: 'room', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW08331A.mp3' },
+
   { text: '若い', hiragana: 'wakai', translation: 'young', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW10002A.mp3' },
 
   {
@@ -202,6 +287,20 @@ const initialWords = [
     audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW09089A.mp3'
   },
 
+  {
+    text: '先生',
+    hiragana: 'sensei',
+    translation: 'teacher (colloquial)',
+    audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW04895A.mp3'
+  },
+
+  {
+    text: '立つ',
+    hiragana: 'tatsu',
+    translation: 'stand, rise',
+    audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW05374A.mp3'
+  },
+
   { text: '呼ぶ', hiragana: 'yobu', translation: 'call, name', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW09717A.mp3' },
 
   {
@@ -221,6 +320,13 @@ const initialWords = [
   { text: 'もっと', hiragana: 'motto', translation: 'more', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW09298A.mp3' },
 
   {
+    text: '帰る',
+    hiragana: 'kaeru',
+    translation: 'go back home',
+    audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW01439A.mp3'
+  },
+
+  {
     text: '分かる',
     hiragana: 'wakaru',
     translation: 'understand',
@@ -237,6 +343,8 @@ const initialWords = [
     translation: 'near, close',
     audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW05562A.mp3'
   },
+
+  { text: 'そこ', hiragana: 'soko', translation: 'there', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW05045A.mp3' },
 
   { text: '走る', hiragana: 'hashiru', translation: 'run', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW07309A.mp3' },
 
@@ -265,6 +373,13 @@ const initialWords = [
   { text: '売る', hiragana: 'uru', translation: 'sell', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW00795A.mp3' },
 
   {
+    text: '大好き',
+    hiragana: 'daisuki',
+    translation: 'like (something) a lot',
+    audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW05207A.mp3'
+  },
+
+  {
     text: '体',
     hiragana: 'karada',
     translation: 'body, physique, physical condition',
@@ -280,7 +395,27 @@ const initialWords = [
 
   { text: '飛ぶ', hiragana: 'tobu', translation: 'fly', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW06495A.mp3' },
 
+  {
+    text: 'とても',
+    hiragana: 'totemo',
+    translation: 'very (colloquial)',
+    audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW06468A.mp3'
+  },
+
+  { text: '誰', hiragana: 'dare', translation: 'who', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW05485A.mp3' },
+
+  {
+    text: '好き',
+    hiragana: 'suki',
+    translation: 'favorite, liked',
+    audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW04528A.mp3'
+  },
+
   { text: '読む', hiragana: 'yomu', translation: 'read', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW09728A.mp3' },
+
+  { text: '次', hiragana: 'tsugi', translation: 'next', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW05835A.mp3' },
+
+  { text: 'あなた', hiragana: 'anata', translation: 'you', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW00197A.mp3' },
 
   { text: '飲む', hiragana: 'nomu', translation: 'drink', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW07115A.mp3' },
 
@@ -293,7 +428,23 @@ const initialWords = [
     audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW03783A.mp3'
   },
 
-  { text: '早い', hiragana: 'hayai', translation: 'early', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW07465A.mp3' }
+  {
+    text: '今日',
+    hiragana: 'kyou',
+    translation: 'today (colloquial)',
+    audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW02231A.mp3'
+  },
+
+  {
+    text: '友達',
+    hiragana: 'tomodachi',
+    translation: 'friend, companion (colloquial)',
+    audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW06516A.mp3'
+  },
+
+  { text: '早い', hiragana: 'hayai', translation: 'early', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW07465A.mp3' },
+
+  { text: 'どれ', hiragana: 'dore', translation: 'what, which', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW06572A.mp3' }
 ]
 
 const createEntry = (word: string, hiragana: string, meaning: string, sound: string): VocabEntry => {
