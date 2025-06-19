@@ -71,7 +71,11 @@ export default function TabTwoScreen() {
           return word
         }) || null
     }
-    setCurrentWort(newWords?.sort(() => Math.random() - 0.5).find((word) => word.active && word.active && word.done === false) || null)
+    const test =
+      newWords
+        ?.sort(() => Math.random() - 0.5)
+        .find((word) => word.active && word.active && word.done === false && word.word.word !== currenrtWord?.word.word) || null
+    setCurrentWort(test)
     currentWords(newWords)
   }
 
