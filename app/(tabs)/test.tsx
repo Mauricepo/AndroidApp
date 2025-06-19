@@ -130,7 +130,7 @@ export default function TabTwoScreen() {
             </>
           )}
         </Button>
-        <View width={20} height={500} />
+        <View width={20} height={300} />
         <XStack flex={1} gap="$5">
           {asnwers?.map((word, index) => (
             <Button
