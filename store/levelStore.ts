@@ -2,13 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create, StoreApi, UseBoundStore } from 'zustand'
 const initialWords = [
   {
-    text: '多い',
-    hiragana: 'ooi',
-    translation: 'a lot of, many',
-    audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW00964A.mp3'
-  },
-
-  {
     text: '出る',
     hiragana: 'deru',
     translation: 'go out, leave',
@@ -31,8 +24,6 @@ const initialWords = [
     audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW05866A.mp3'
   },
 
-  { text: '思う', hiragana: 'omou', translation: 'think', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW01213A.mp3' },
-
   {
     text: '持つ',
     hiragana: 'motsu',
@@ -42,18 +33,12 @@ const initialWords = [
 
   { text: '買う', hiragana: 'kau', translation: 'buy', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW01429A.mp3' },
 
-  { text: '時間', hiragana: 'jikan', translation: 'time, hour', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW03620A.mp3' },
-
-  { text: '知る', hiragana: 'shiru', translation: 'know', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW04340A.mp3' },
-
   {
     text: '同じ',
     hiragana: 'onaji',
     translation: 'same, identical',
     audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW01160A.mp3'
   },
-
-  { text: 'なる', hiragana: 'naru', translation: 'become', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW06750A.mp3' },
 
   {
     text: 'まだ',
@@ -62,8 +47,6 @@ const initialWords = [
     audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW08718A.mp3'
   },
 
-  { text: 'あと', hiragana: 'ato', translation: 'after', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW00187A.mp3' },
-
   {
     text: '聞く',
     hiragana: 'kiku',
@@ -71,15 +54,7 @@ const initialWords = [
     audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW02020A.mp3'
   },
 
-  { text: '言う', hiragana: 'iu', translation: 'say, tell', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW00352A.mp3' },
-
   { text: '子供', hiragana: 'kodomo', translation: 'child', audioURL: 'https://assets3.iknow.jp/assets/legacy/JLL/audio/JW03174A.mp3' },
-
-  { text: 'そう', hiragana: 'sou', translation: 'so, that way', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW04953A.mp3' },
-
-  { text: 'もう', hiragana: 'mou', translation: 'already, yet', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW09232A.mp3' },
-
-  { text: '学生', hiragana: 'gakusei', translation: 'student', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW01515A.mp3' },
 
   {
     text: '熱い',
@@ -139,13 +114,6 @@ const initialWords = [
   },
 
   {
-    text: 'こう',
-    hiragana: 'kou',
-    translation: 'like this, such',
-    audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW02846A.mp3'
-  },
-
-  {
     text: '始める',
     hiragana: 'hajimeru',
     translation: 'start (something)',
@@ -186,13 +154,6 @@ const initialWords = [
 
   { text: '置く', hiragana: 'oku', translation: 'put, place', audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW01032A.mp3' },
 
-  {
-    text: '住む',
-    hiragana: 'sumu',
-    translation: 'live, reside',
-    audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW04629A.mp3'
-  },
-
   { text: '働く', hiragana: 'hataraku', translation: 'work', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW07338A.mp3' },
 
   {
@@ -205,20 +166,11 @@ const initialWords = [
   { text: '呼ぶ', hiragana: 'yobu', translation: 'call, name', audioURL: 'https://assets2.iknow.jp/assets/legacy/JLL/audio/JW09717A.mp3' },
 
   {
-    text: '大学',
-    hiragana: 'daigaku',
-    translation: 'university, college',
-    audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW05163A.mp3'
-  },
-
-  {
     text: '安い',
     hiragana: 'yasui',
     translation: 'cheap, inexpensive',
     audioURL: 'https://assets1.iknow.jp/assets/legacy/JLL/audio/JW09409A.mp3'
   },
-
-  { text: 'もっと', hiragana: 'motto', translation: 'more', audioURL: 'https://assets0.iknow.jp/assets/legacy/JLL/audio/JW09298A.mp3' },
 
   {
     text: '分かる',
