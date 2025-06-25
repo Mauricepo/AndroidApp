@@ -16,6 +16,8 @@ export default function TabTwoScreen() {
 
   const [checkSpelling, setCheckSpelling] = useState<boolean>()
 
+  const [score, setScore] = useState<number>()
+
   interface learningWort {
     word: VocabEntry
     step: number
@@ -95,6 +97,7 @@ export default function TabTwoScreen() {
       return
     } else {
       playSound(selectedAnswer.sound)
+      setScore((prevScore) => (prevScore ?? 0) + 1)
       setNextWord()
     }
   }
@@ -108,7 +111,7 @@ export default function TabTwoScreen() {
       ?.map((w) => w.word)
       ?.filter((word) => word.word !== currenrtWord?.word.word)
       ?.sort(() => Math.random() - 0.5)
-      ?.slice(0, 2)
+      ?.slice(0, 5)
       .concat(currenrtWord?.word ? [currenrtWord.word] : [])
 
     setAnswers(answers?.sort(() => Math.random() - 0.5))
@@ -116,7 +119,7 @@ export default function TabTwoScreen() {
 
   return (
     <>
-      <Progress value={0} size="$6">
+      <Progress value={((score ?? 0) * 100) / ((learningWords?.length ?? 0) * 5)} size="$6">
         <Progress.Indicator animation="bouncy" />
       </Progress>
       <YStack style={{ alignSelf: 'center', alignItems: 'center' }}>
@@ -131,7 +134,7 @@ export default function TabTwoScreen() {
           )}
         </Button>
         <View width={20} height={300} />
-        <XStack flex={1} gap="$5">
+        <XStack flex={1} gap="$5" flexWrap="wrap" style={{ justifyContent: 'center', alignItems: 'center' }}>
           {asnwers?.map((word, index) => (
             <Button
               key={index}
@@ -140,12 +143,12 @@ export default function TabTwoScreen() {
               onPress={() => {
                 handleAnswer(word)
               }}
+              style={{ maxWidth: '90%', alignSelf: 'center' }}
             >
               {checkSpelling ? word.hiragana : word.meaning}
             </Button>
           ))}
         </XStack>
-
         {wrong && (
           <Button size="$4" theme="accent" onPress={() => setNextWord()}>
             weiter
