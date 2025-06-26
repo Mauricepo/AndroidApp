@@ -134,15 +134,19 @@ export default function TabTwoScreen() {
         {currenrtWord?.step === 6 ? (
           <Button size="$11" theme="accent" onPress={() => playSound(currenrtWord.word.sound)}>
             Sound
+            {wrong && (
+              <>
+                |{currenrtWord?.word.word || 'No word available'}|{currenrtWord?.word.meaning || 'No word available'}|
+                {currenrtWord?.word.hiragana || 'No word available'}
+              </>
+            )}
           </Button>
         ) : (
           <Button size="$11" theme="accent">
             {currenrtWord?.word.word || 'No word available'}
             {wrong && (
               <>
-                {currenrtWord?.word.meaning || 'No word available'}
-
-                {currenrtWord?.word.hiragana || 'No word available'}
+                {currenrtWord?.word.meaning || 'No word available'}|{currenrtWord?.word.hiragana || 'No word available'}
               </>
             )}
           </Button>
