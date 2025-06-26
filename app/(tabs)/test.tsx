@@ -94,10 +94,12 @@ export default function TabTwoScreen() {
 
     if (currenrtWord?.word.meaning !== selectedAnswer.meaning) {
       setWrong(true)
-      setScore((prevScore) => {
-        const newScore = (prevScore ?? 0) - 1
-        return newScore < 0 ? 0 : newScore
-      })
+
+      if (currenrtWord && currenrtWord?.step > 1)
+        setScore((prevScore) => {
+          const newScore = (prevScore ?? 0) - 1
+          return newScore < 0 ? 0 : newScore
+        })
       return
     } else {
       playSound(selectedAnswer.sound)
@@ -133,6 +135,7 @@ export default function TabTwoScreen() {
           {wrong && (
             <>
               {currenrtWord?.word.meaning || 'No word available'}
+
               {currenrtWord?.word.hiragana || 'No word available'}
             </>
           )}
