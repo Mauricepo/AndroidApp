@@ -56,7 +56,7 @@ export default function TabTwoScreen() {
     let newWords =
       learningWords?.map((word) => {
         if (word.word.word === currenrtWord?.word.word) {
-          if (word.step === 5) {
+          if (word.step === 6) {
             done = true
             return { ...word, active: false, done: true }
           }
@@ -87,7 +87,7 @@ export default function TabTwoScreen() {
   }
 
   function handleAnswer(selectedAnswer: VocabEntry) {
-    if (!checkSpelling) {
+    if (!checkSpelling && (currenrtWord?.step ?? 0) < 6) {
       setCheckSpelling(true)
       return
     }
@@ -125,21 +125,29 @@ export default function TabTwoScreen() {
 
   return (
     <>
-      <Progress value={((score ?? 0) * 100) / ((learningWords?.length ?? 0) * 5)} size="$6">
+      <Progress value={((score ?? 0) * 100) / ((learningWords?.length ?? 0) * 6)} size="$6">
         <Progress.Indicator animation="bouncy" />
       </Progress>
       <YStack style={{ alignSelf: 'center', alignItems: 'center' }}>
         <View width={20} height={50} />
-        <Button size="$11" theme="accent">
-          {currenrtWord?.word.word || 'No word available'}
-          {wrong && (
-            <>
-              {currenrtWord?.word.meaning || 'No word available'}
 
-              {currenrtWord?.word.hiragana || 'No word available'}
-            </>
-          )}
-        </Button>
+        {currenrtWord?.step === 6 ? (
+          <Button size="$11" theme="accent" onPress={() => playSound(currenrtWord.word.sound)}>
+            Sound
+          </Button>
+        ) : (
+          <Button size="$11" theme="accent">
+            {currenrtWord?.word.word || 'No word available'}
+            {wrong && (
+              <>
+                {currenrtWord?.word.meaning || 'No word available'}
+
+                {currenrtWord?.word.hiragana || 'No word available'}
+              </>
+            )}
+          </Button>
+        )}
+
         <View width={20} height={300} />
         <XStack flex={1} gap="$5" flexWrap="wrap" style={{ justifyContent: 'center', alignItems: 'center' }}>
           {asnwers?.map((word, index) => (
