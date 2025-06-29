@@ -115,7 +115,7 @@ export default function TabTwoScreen() {
   useEffect(() => {
     const answers = learningWords
       ?.map((w) => w.word)
-      ?.filter((word) => word.word !== currenrtWord?.word.word)
+      ?.filter((word) => word.word !== currenrtWord?.word.word && word.isActive)
       ?.sort(() => Math.random() - 0.5)
       ?.slice(0, 5)
       .concat(currenrtWord?.word ? [currenrtWord.word] : [])
