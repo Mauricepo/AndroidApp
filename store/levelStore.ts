@@ -652,7 +652,7 @@ export const useVocabStore: UseBoundStore<StoreApi<VocabStore>> = create<VocabSt
         return true
       })
       .sort((a: VocabEntry, b: VocabEntry) => a.dueDate - b.dueDate)
-    return due.length > 0 ? due.slice(25, 50) : null
+    return due.length > 0 ? due.slice(25, 75) : null
   },
   reset: () => {
     const entries = Object.fromEntries(initialWords.map((w) => [w.text, createEntry(w.text, w.hiragana, w.translation, w.audioURL)]))
