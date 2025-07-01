@@ -1,67 +1,432 @@
-import { Image } from 'expo-image'
-import { Platform, StyleSheet } from 'react-native'
-
-import { HelloWave } from '@/components/HelloWave'
-import ParallaxScrollView from '@/components/ParallaxScrollView'
-import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
-
+import { allWords, rawWords, useVocabStore, VocabStore } from '@/store/levelStore'
+import { useEffect, useState } from 'react'
+import { Accordion, Button, Input, Switch, Text, View, XStack, YStack } from 'tamagui'
 export default function HomeScreen() {
+  interface buttons extends rawWords {
+    toggled: boolean
+  }
+
+  const { setSelectedWords } = useVocabStore((state: VocabStore) => state)
+
+  const [isSwitchOn, setIsSwitchOn] = useState(true)
+
+  const [words, setWords] = useState<buttons[]>([])
+
+  const [selectedWords, setselectedWords] = useState<buttons[]>([])
+
+  const [start, setStart] = useState(0)
+  const [end, setEnd] = useState(0)
+
+  useEffect(() => {
+    setWords(allWords.map((word) => ({ ...word, toggled: false })) as buttons[])
+  }, [])
+
+  const toggleSwitch = () => {
+    setIsSwitchOn((prev) => !prev)
+  }
+
+  const handleWordToggle = (button: buttons) => {
+    setWords(() => {
+      return words.map((w) => (w.text === button.text ? { ...w, toggled: !w.toggled } : w))
+    })
+
+    if (button.toggled) {
+      setselectedWords((prev) => prev.filter((word: buttons) => word.text !== button.text))
+    }
+    if (!button.toggled) {
+      setselectedWords([...selectedWords, button])
+    }
+  }
+
+  const sentWordsToStore = () => {
+    if (isSwitchOn) {
+      setSelectedWords(words.slice(start, end))
+    } else {
+      setSelectedWords(selectedWords)
+    }
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Image source={require('@/assets/images/partial-react-logo.png')} style={styles.reactLogo} />}
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>{`Tap the Explore tab to learn more about what's included in this starter app.`}</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <>
+      <YStack style={{ alignSelf: 'center', alignItems: 'center', flex: 1, overflow: 'scroll' }}>
+        <Switch onCheckedChange={toggleSwitch} defaultChecked={true}>
+          <Switch.Thumb animation="quicker" />
+        </Switch>
+        {isSwitchOn && (
+          <XStack>
+            <Input value={start.toString()} onChange={(e) => setStart(Number(e.nativeEvent.text))} placeholder="Start" />
+            <Input value={end.toString()} onChange={(e) => setEnd(Number(e.nativeEvent.text))} placeholder="Ende" />
+          </XStack>
+        )}
+
+        {!isSwitchOn && (
+          <Accordion overflow="hidden" width="$20" type="multiple">
+            <Accordion.Item value="a1">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    1-100
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(0, 100)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a2">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    101-200
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(100, 200)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a3">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    201-300
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(200, 300)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a4">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    301-400
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(300, 400)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a5">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    401-500
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(400, 500)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a6">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    501-600
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(500, 600)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a7">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    601-700
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(600, 700)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a8">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    701-800
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(700, 800)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a9">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    801-900
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(800, 900)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+            <Accordion.Item value="a10">
+              <Accordion.Trigger flexDirection="row">
+                {({ open }: { open: boolean }) => (
+                  <Text
+                    // can add theme values
+                    color="white"
+                    fontFamily="$body"
+                    // or just use direct values
+                    fontSize={20}
+                    hoverStyle={{
+                      color: '$colorHover'
+                    }}
+                  >
+                    901-1000
+                  </Text>
+                )}
+              </Accordion.Trigger>
+              <Accordion.HeightAnimator animation="medium">
+                <Accordion.Content animation="medium" exitStyle={{ opacity: 0 }}>
+                  {words.slice(900, 1000)?.map((word, index) => (
+                    <>
+                      <Button
+                        key={index}
+                        size="$3"
+                        theme="accent"
+                        onPress={() => handleWordToggle(word)}
+                        style={{ maxWidth: '90%', alignSelf: 'center', backgroundColor: `${word.toggled ? 'red' : 'white'}` }}
+                      >
+                        {`${word.text} | ${word.translation}`}
+                      </Button>
+                      <View width={2} height={5} />
+                    </>
+                  ))}
+                </Accordion.Content>
+              </Accordion.HeightAnimator>
+            </Accordion.Item>
+          </Accordion>
+        )}
+        <Button size="$3" theme="accent" onPress={() => sentWordsToStore()} style={{ maxWidth: '90%', alignSelf: 'center' }}>
+          Lets go
+        </Button>
+      </YStack>
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute'
-  }
-})
