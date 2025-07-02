@@ -109,10 +109,6 @@ export default function TabTwoScreen() {
   }
 
   useEffect(() => {
-    console.log('learningWords:', learningWords)
-  }, [learningWords])
-
-  useEffect(() => {
     const answers = learningWords
       ?.map((w) => w.word)
       ?.filter((word) => word.word !== currenrtWord?.word.word && word.isActive)
