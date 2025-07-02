@@ -2,7 +2,7 @@ import { useVocabStore, VocabEntry, VocabStore } from '@/store/levelStore'
 import { Audio } from 'expo-av'
 import { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { Button, Progress, View, XStack, YStack } from 'tamagui'
+import { Button, Progress, Theme, View, XStack, YStack } from 'tamagui'
 export default function TabTwoScreen() {
   const { vocab, load, getNext } = useVocabStore((state: VocabStore) => state)
 
@@ -121,55 +121,57 @@ export default function TabTwoScreen() {
 
   return (
     <>
-      <Progress value={((score ?? 0) * 100) / ((learningWords?.length ?? 0) * 6)} size="$6">
-        <Progress.Indicator animation="bouncy" />
-      </Progress>
-      <YStack style={{ alignSelf: 'center', alignItems: 'center' }}>
-        <View width={20} height={50} />
+      <Theme name="dark">
+        <Progress value={((score ?? 0) * 100) / ((learningWords?.length ?? 0) * 6)} size="$6">
+          <Progress.Indicator animation="bouncy" />
+        </Progress>
+        <YStack style={{ alignSelf: 'center', alignItems: 'center' }}>
+          <View width={20} height={50} />
 
-        {currenrtWord?.step === 6 ? (
-          <Button size="$11" theme="accent" onPress={() => playSound(currenrtWord.word.sound)}>
-            Sound
-            {wrong && (
-              <>
-                |{currenrtWord?.word.word || 'No word available'}|{currenrtWord?.word.meaning || 'No word available'}|
-                {currenrtWord?.word.hiragana || 'No word available'}
-              </>
-            )}
-          </Button>
-        ) : (
-          <Button size="$11" theme="accent">
-            {currenrtWord?.word.word || 'No word available'}
-            {wrong && (
-              <>
-                {currenrtWord?.word.meaning || 'No word available'}|{currenrtWord?.word.hiragana || 'No word available'}
-              </>
-            )}
-          </Button>
-        )}
-
-        <View width={20} height={300} />
-        <XStack flex={1} gap="$5" flexWrap="wrap" style={{ justifyContent: 'center', alignItems: 'center' }}>
-          {asnwers?.map((word, index) => (
-            <Button
-              key={index}
-              size="$3"
-              theme="accent"
-              onPress={() => {
-                handleAnswer(word)
-              }}
-              style={{ maxWidth: '90%', alignSelf: 'center' }}
-            >
-              {checkSpelling ? word.hiragana : word.meaning}
+          {currenrtWord?.step === 6 ? (
+            <Button size="$11" theme="accent" onPress={() => playSound(currenrtWord.word.sound)}>
+              Sound
+              {wrong && (
+                <>
+                  |{currenrtWord?.word.word || 'No word available'}|{currenrtWord?.word.meaning || 'No word available'}|
+                  {currenrtWord?.word.hiragana || 'No word available'}
+                </>
+              )}
             </Button>
-          ))}
-        </XStack>
-        {wrong && (
-          <Button size="$4" theme="accent" onPress={() => setNextWord()}>
-            weiter
-          </Button>
-        )}
-      </YStack>
+          ) : (
+            <Button size="$11" theme="accent">
+              {currenrtWord?.word.word || 'No word available'}
+              {wrong && (
+                <>
+                  {currenrtWord?.word.meaning || 'No word available'}|{currenrtWord?.word.hiragana || 'No word available'}
+                </>
+              )}
+            </Button>
+          )}
+
+          <View width={20} height={300} />
+          <XStack flex={1} gap="$5" flexWrap="wrap" style={{ justifyContent: 'center', alignItems: 'center' }}>
+            {asnwers?.map((word, index) => (
+              <Button
+                key={index}
+                size="$3"
+                theme="accent"
+                onPress={() => {
+                  handleAnswer(word)
+                }}
+                style={{ maxWidth: '90%', alignSelf: 'center' }}
+              >
+                {checkSpelling ? word.hiragana : word.meaning}
+              </Button>
+            ))}
+          </XStack>
+          {wrong && (
+            <Button size="$4" theme="accent" onPress={() => setNextWord()}>
+              weiter
+            </Button>
+          )}
+        </YStack>
+      </Theme>
     </>
   )
 }
