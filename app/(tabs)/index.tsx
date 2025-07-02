@@ -46,6 +46,11 @@ export default function HomeScreen() {
     }
   }
 
+  const accordionStyle = {
+    backgroundColor: 'black',
+    color: 'white'
+  }
+
   return (
     <>
       <YStack style={{ alignSelf: 'center', alignItems: 'center', flex: 1, overflow: 'scroll' }}>
@@ -62,7 +67,7 @@ export default function HomeScreen() {
         {!isSwitchOn && (
           <Accordion overflow="hidden" width="$20" type="multiple">
             <Accordion.Item value="a1">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -98,7 +103,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a2">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -134,7 +139,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a3">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -170,7 +175,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a4">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -206,7 +211,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a5">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -242,7 +247,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a6">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -278,7 +283,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a7">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -314,7 +319,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a8">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -350,7 +355,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a9">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
@@ -386,7 +391,7 @@ export default function HomeScreen() {
               </Accordion.HeightAnimator>
             </Accordion.Item>
             <Accordion.Item value="a10">
-              <Accordion.Trigger flexDirection="row">
+              <Accordion.Trigger style={accordionStyle} flexDirection="row">
                 {({ open }: { open: boolean }) => (
                   <Text
                     // can add theme values
